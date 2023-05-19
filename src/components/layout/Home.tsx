@@ -9,6 +9,7 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import { Product } from '../../types/Product'
 import Pagination from '@mui/material/Pagination'
+import ProductCard from './ProductCard'
 
 
 const getFilteredProductList = (products: Product[], search: string) => {
@@ -49,40 +50,25 @@ const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setSearch(e.target.value)
         }
 
-        // const fetchMoreData = async () =>{
-        //     const url = `https://api.escuelajs.co/api/v1/products?offset=${offset + 1}&limit=${limit}`;
-        //     setPage(page + 1);
-        //       const data = await fetch(url);
-        //       const parsedData = await data.json();
-        //       console.log(parsedData);
-        //       setArticles(articles.concat(parsedData.articles));
-        //       setTotalResults(parsedData.totalResults); 
-        //   }
-
-    return (
+  return (
+    <div>
+      Home
       <div>
-        Home
-        <div>
-          <PrimarySearchAppBar />
-        </div>
-        {filterProducts.map(product =>
-            <div>
-              <p key={product.id}>{product.title}: {product.price} Euros</p>
-              {/* <IconButton
-              onClick={()=>toggleFav(user.id)}
-              color= {favIds.includes(user.id)?"success": "info"} >
-                <FavoriteIcon/>
-              </IconButton> */}
-            </div>
-            )}
-            <Pagination 
+        <PrimarySearchAppBar />
+      </div>
+      <div className="product-grid">
+      {filterProducts.map((product) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+      <Pagination 
         count={100} 
         page={page}
         onChange={handleChange}
       />
-      </div>
-    );
-  }
+    </div>
+  );
+};
   
   export default Home;
   
