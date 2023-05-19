@@ -20,9 +20,9 @@ import { fetchAllProducts } from './redux/reducers/productsReducer'
 import { Product } from './types/Product'
 
 
-const getFilteredList = (users: User[], search: string) => {
-  return users.filter(user => user.name.toLowerCase().includes(search.toLocaleLowerCase()))
-}
+// const getFilteredList = (users: User[], search: string) => {
+//   return users.filter(user => user.name.toLowerCase().includes(search.toLocaleLowerCase()))
+// }
 
 // const getFilteredProductList = (products: Product[], search: string) => {
 //   return products.filter(product => product.title.toLowerCase().includes(search.toLocaleLowerCase()))
@@ -32,9 +32,9 @@ const App = () => {
   const [sort, setSort] = useState<"asc" | "desc">("asc")
   const [search, setSearch] = useState("")
   const {users, loading, error} = useAppSelector(state => state.usersReducer)
-  const filterUsers = getFilteredList(users, search)
-  const favIds = useAppSelector(state => state.favReducer)
-  const favList = users.filter(user => favIds.includes(user.id))
+  // const filterUsers = getFilteredList(users, search)
+  // const favIds = useAppSelector(state => state.favReducer)
+  // const favList = users.filter(user => favIds.includes(user.id))
   const dispatch = useAppDispatch()
   
   const addUser = () => {
@@ -78,14 +78,14 @@ const App = () => {
     setSearch(e.target.value)
     }
 
-    const toggleFav = (id: number) =>{
-      if (favIds.includes(id)){
-        dispatch(removeFromFav(id))
-      } else {
-        dispatch(addOneFav(id))
-      }
+    // const toggleFav = (id: number) =>{
+    //   if (favIds.includes(id)){
+    //     dispatch(removeFromFav(id))
+    //   } else {
+    //     dispatch(addOneFav(id))
+    //   }
       
-    }
+    // }
 
   return (
       <div>

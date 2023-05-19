@@ -10,6 +10,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <div className="product-card">
       <h3>{product.title}</h3>
       <p>{product.price} Euros</p>
+      <p>{product.category.image}</p>
       {/* Additional card content here */}
     </div>
   );
