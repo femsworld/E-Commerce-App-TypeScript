@@ -15,11 +15,34 @@ const initialState: ProductReducer = {
     error: "",
     products: []
 }
+
+export interface FetchQuery {
+    offset: number
+    limit: number
+  }
+
+// export const fetchAllProducts = createAsyncThunk(
+//     "fetchAllProducts",
+//     async ({
+//         offset, limit
+//     }: FetchQuery) => {
+//         try {
+//             const result = await axios.get<Product[]>(`https://api.escuelajs.co/api/v1/products?offset=${offset}&limit=${limit}`)
+//             return result.data
+//         } catch (e) {
+//             const error = e as AxiosError
+//             return error.message
+//         }
+//     }
+// )
+
 export const fetchAllProducts = createAsyncThunk(
     "fetchAllProducts",
-    async () => {
+    async ({
+        offset, limit
+    }: FetchQuery) => {
         try {
-            const result = await axios.get<Product[]>("https://api.escuelajs.co/api/v1/products")
+            const result = await axios.get<Product[]>(`https://api.escuelajs.co/api/v1/products?offset=${offset}&limit=${limit}`)
             return result.data
         } catch (e) {
             const error = e as AxiosError

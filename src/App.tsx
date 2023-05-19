@@ -16,11 +16,17 @@ import { User } from './types/User'
 import { IconButton } from '@mui/material'
 import { addOneFav, removeFromFav } from './redux/reducers/favReducer'
 import Home from './components/layout/Home'
+import { fetchAllProducts } from './redux/reducers/productsReducer'
+import { Product } from './types/Product'
 
 
 const getFilteredList = (users: User[], search: string) => {
   return users.filter(user => user.name.toLowerCase().includes(search.toLocaleLowerCase()))
 }
+
+// const getFilteredProductList = (products: Product[], search: string) => {
+//   return products.filter(product => product.title.toLowerCase().includes(search.toLocaleLowerCase()))
+// }
 
 const App = () => {
   const [sort, setSort] = useState<"asc" | "desc">("asc")
@@ -46,7 +52,6 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchAllUsers({ page: 1, per_page: 10 }))
   }, [])
-  console.log(users)
   
   const deleteAllUsers = () => {
     dispatch(emptyUserReducer())
@@ -95,7 +100,7 @@ const App = () => {
         value={search}
         onChange={onSearchChange} //create useDebounce custom hook ?
       />
-        {filterUsers.map(user =>
+        {/* {filterUsers.map(user =>
             <div>
               <p key={user.id}>{user.name}: {user.email}</p>
               <IconButton
@@ -104,7 +109,7 @@ const App = () => {
                 <FavoriteIcon/>
               </IconButton>
             </div>
-            )}
+            )} */}
       {/* <div>
         <h3>Favourite List</h3>
         {favList.map(
@@ -112,6 +117,9 @@ const App = () => {
             <p> {fav.name} </p>
           ))}
       </div> */}
+      Product List
+      
+      
           
       </div>
   )
