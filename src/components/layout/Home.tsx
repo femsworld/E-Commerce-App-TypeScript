@@ -45,7 +45,7 @@ const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
   setPage(value);
   const fetchQuery: FetchQuery = {
     offset: value,
-    limit: 10,
+    limit: 8,
   };
   dispatch(fetchAllProducts(fetchQuery));
 };
@@ -63,7 +63,7 @@ console.log("product by category", productByCategory)
 
 
     useEffect(() => {
-        dispatch(fetchAllProducts({ offset: 1, limit: 10 }))
+        dispatch(fetchAllProducts({ offset: 1, limit: 8 }))
         dispatch(fetchAllCategories())
         // dispatch(fetchAllCategoriesId({ offset: 1, limit: 10, categoryID:  }))
     }, [])
