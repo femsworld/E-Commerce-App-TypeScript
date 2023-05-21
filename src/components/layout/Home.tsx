@@ -64,7 +64,6 @@ const Home = () => {
     dispatch(fetchAllProducts(fetchQuery));
   };
 
-  // const getProductByCategoryId = (event: React.ChangeEvent<unknown>, categoryID: number) => {
   const getProductByCategoryId = (categoryID: number) => {
     const fetchQuery: FetchQueryCategory = {
       offset: page,
@@ -73,15 +72,12 @@ const Home = () => {
     };
     dispatch(fetchAllCategoriesId(fetchQuery));
   };
-  console.log("product by category", productByCategory);
+  // console.log("product by category", productByCategory);
 
   useEffect(() => {
     dispatch(fetchAllProducts({ offset: 1, limit: 6 }));
     dispatch(fetchAllCategories());
-    // dispatch(fetchAllCategoriesId({ offset: 1, limit: 10, categoryID:  }))
   }, []);
-  // console.log(users)
-  // console.log("Category list",categories)
 
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Product } from "../../types/Product";
 import { Link } from "react-router-dom";
 import { SingleProduct } from "../../types/SingleProduct";
@@ -6,12 +6,30 @@ import { fetchSingleProduct } from "../../redux/reducers/productsReducer";
 import IconButton from "@mui/material/IconButton";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { addItemToCart } from "../../redux/reducers/cartReducer";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import useAppSelector from "../../hooks/useAppSelector";
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const dispatch = useAppDispatch();
+  const { items } = useAppSelector((state) => state.cartReducer);
+
+  // dispatch(addItemToCart(items));
+
+  const addOneItemToCart = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    dispatch(addItemToCart(product));
+    console.log("Checking for cart clicks")
+  };
+
+  useEffect(() => {
+    console.log("Checking for cart update", items.length)
+  }, [items])
+
   return (
     <div className="product-card">
       <h3>{product.title}</h3>
@@ -28,14 +46,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       />
       <p>{product.price} Euros</p>
       <Link to={`/details/${product.id}`}>
-        {" "}
-        <button>Detail</button>{" "}
+        <button>Detail</button>
       </Link>
       <IconButton size="large" aria-label="shopping cart" color="inherit">
-        <AddShoppingCartIcon/>
+        <AddShoppingCartIcon />
       </IconButton>
+      <button onClick={(e) => addOneItemToCart(e)}>CartDetails</button>
     </div>
   );
 };
 
-export default ProductCard;
+export default ProductCard
+

@@ -16,6 +16,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import useAppSelector from "../../hooks/useAppSelector";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -58,6 +59,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
+  const { items } = useAppSelector((state) => state.cartReducer);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -197,6 +199,8 @@ export default function Header() {
               </Badge>
             </IconButton> */}
             <IconButton size="large" aria-label="shopping cart" color="inherit">
+            <Badge badgeContent={items.length} color="error">
+            </Badge>
               <ShoppingCartIcon />
             </IconButton>
             <IconButton
