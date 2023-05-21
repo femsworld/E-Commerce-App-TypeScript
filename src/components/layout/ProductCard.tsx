@@ -1,5 +1,11 @@
 import React from "react";
 import { Product } from "../../types/Product";
+import { Link } from "react-router-dom";
+import { SingleProduct } from "../../types/SingleProduct";
+import { fetchSingleProduct } from "../../redux/reducers/productsReducer";
+import IconButton from "@mui/material/IconButton";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 interface ProductCardProps {
   product: Product;
@@ -18,9 +24,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         className="card-img-top"
         alt="..."
         // style={{ width: '100%', height: 'auto' }}
-        style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+        style={{ width: "100%", height: "auto", borderRadius: "8px" }}
       />
       <p>{product.price} Euros</p>
+      <Link to={`/details/${product.id}`}>
+        {" "}
+        <button>Detail</button>{" "}
+      </Link>
+      <IconButton size="large" aria-label="shopping cart" color="inherit">
+        <AddShoppingCartIcon/>
+      </IconButton>
     </div>
   );
 };
