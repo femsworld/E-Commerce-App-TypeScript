@@ -60,6 +60,8 @@ const Home = () => {
     setSearch(e.target.value);
   };
 
+  
+
   return (
     <div>
       Home

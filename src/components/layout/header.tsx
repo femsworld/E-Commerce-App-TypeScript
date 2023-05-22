@@ -17,6 +17,10 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import useAppSelector from "../../hooks/useAppSelector";
+import { useState } from "react";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import { addItemToCart } from "../../redux/reducers/cartReducer";
+import { Link } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -59,13 +63,35 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
+  const dispatch = useAppDispatch();
   const { items } = useAppSelector((state) => state.cartReducer);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const [showCartPage, setShowCartPage] = useState(false);
+
+  // const handleCartIconClick = (
+  //   event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  // ) => {
+  //   // event.preventDefault
+  //   setShowCartPage(true);
+  //   console.log("Cart is clicked");
+  //   // dispatchEvent(addItemToCart())
+  // };
+  const handleCartIconClick = () => {
+    // event.preventDefault
+    if (!showCartPage) {
+      setShowCartPage(true);
+      console.log("Cart is clicked");
+      // dispatchEvent(addItemToCart())
+    }
+  };
+
+  const handleCartPageClose = () => {
+    setShowCartPage(false);
+  };
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -189,20 +215,22 @@ export default function Header() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            {/* <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton> */}
-            <IconButton size="large" aria-label="shopping cart" color="inherit">
+            {/* <IconButton size="large" aria-label="shopping cart" color="inherit" onClick={handleCartIconClick}>
             <Badge badgeContent={items.length} color="error">
             </Badge>
               <ShoppingCartIcon />
-            </IconButton>
+            </IconButton> */}
+            <Link to="/cart" onClick={handleCartIconClick}>
+              <IconButton
+                size="large"
+                aria-label="shopping cart"
+                color="inherit"
+              >
+                <Badge badgeContent={items.length} color="error" />
+                <ShoppingCartIcon />
+              </IconButton>
+            </Link>
+
             <IconButton
               size="large"
               edge="end"

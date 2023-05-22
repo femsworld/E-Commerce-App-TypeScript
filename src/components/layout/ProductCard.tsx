@@ -23,7 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const addOneItemToCart = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     dispatch(addItemToCart(product));
-    console.log("Checking for cart clicks")
+    // console.log("Checking for cart clicks")
   };
 
   return (

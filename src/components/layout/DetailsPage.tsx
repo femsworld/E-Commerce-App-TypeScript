@@ -3,7 +3,6 @@ import useAppDispatch from "../../hooks/useAppDispatch";
 import { fetchSingleProduct } from "../../redux/reducers/productsReducer";
 import { useParams } from "react-router-dom";
 import useAppSelector from "../../hooks/useAppSelector";
-import { title } from "process";
 import { SingleProduct } from "../../types/SingleProduct";
 
 const DetailsPage = () => {
@@ -15,7 +14,6 @@ const DetailsPage = () => {
   useEffect(() => {
     dispatch(fetchSingleProduct({ id }));
   }, [id]);
-  console.log("Product details: ", singleProduct?.images);
 
   const goToNextImage = () => {
     const nextIndex =
