@@ -26,18 +26,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     console.log("Checking for cart clicks")
   };
 
-  useEffect(() => {
-    console.log("Checking for cart update", items.length)
-  }, [items])
-
   return (
     <div className="product-card">
       <h3>{product.title}</h3>
       <img
         src={
-          !product.category.image
-            ? "https://media.cnn.com/api/v1/images/stellar/prod/230124153647-01-monterey-park-vigil.jpg?c=16x9&q=w_800,c_fill"
-            : product.category.image
+          product.category.image
+          ? product.category.image
+          : "https://media.cnn.com/api/v1/images/stellar/prod/230124153647-01-monterey-park-vigil.jpg?c=16x9&q=w_800,c_fill"
         }
         className="card-img-top"
         alt="..."
@@ -48,10 +44,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <Link to={`/details/${product.id}`}>
         <button>Detail</button>
       </Link>
-      <IconButton size="large" aria-label="shopping cart" color="inherit">
+      <IconButton onClick={(e) => addOneItemToCart(e)} size="large" aria-label="shopping cart" color="inherit">
         <AddShoppingCartIcon />
-      </IconButton>
-      <button onClick={(e) => addOneItemToCart(e)}>CartDetails</button>
+      </IconButton> 
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 import { CartItem } from "../../types/CartItem";
 
@@ -37,18 +37,17 @@ const cartSlice = createSlice({
       }
         state.totalAmount += newItem.price * newItem.quantity;
     },
-    removeItemFromCart: (state, action) => {
-      const itemId = action.payload;
-      // Find the item in the cart
-        // const existingItem = state.items.find(item => item.id === itemId);
-
-        // if (existingItem) {
-        //   // Subtract the item's price from the total
-        //   state.total -= existingItem.price * existingItem.quantity;
-        //   // Remove the item from the cart
-        //   state.items = state.items.filter(item => item.id !== itemId);
-        // }
-    },
+    // removeItemFromCart: (state, action) => {
+    //   const itemId = action.payload;
+    //   // Find the item in the cart
+    //     // const existingItem = state.items.find(item => item.id === itemId);
+    //     // if (existingItem) {
+    //     //   // Subtract the item's price from the total
+    //     //   state.total -= existingItem.price * existingItem.quantity;
+    //     //   // Remove the item from the cart
+    //     //   state.items = state.items.filter(item => item.id !== itemId);
+    //     // }
+    // },
     clearCart: (state) => {
       // Clear the cart by resetting the state to the initial state
       return initialState;
@@ -57,7 +56,7 @@ const cartSlice = createSlice({
 });
 
 // Extract the action creators from the slice
-export const { addItemToCart, removeItemFromCart, clearCart } =
+export const { addItemToCart, clearCart } =
   cartSlice.actions;
 
 // Export the cartReducer
