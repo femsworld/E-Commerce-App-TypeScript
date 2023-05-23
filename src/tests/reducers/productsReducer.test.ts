@@ -57,4 +57,7 @@ describe("Testing productsReducer", () => {
     })
 
   })
+//   test("Check should fetch all products",async () => {
+//     await store.dispatch(fetchAllProducts())
+//   })
 });
