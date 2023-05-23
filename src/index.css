@@ -18,6 +18,10 @@ code {
   grid-gap: 1rem;
 }
 
+.category-grid {
+  margin-top: 4rem;
+}
+
 @media (max-width: 768px) {
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
