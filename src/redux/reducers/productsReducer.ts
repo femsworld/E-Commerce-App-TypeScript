@@ -107,13 +107,13 @@ const productsSlice = createSlice({
         products,
       };
     },
-    sortProductByPrice: (state, action: PayloadAction<"asc" | "desc">) => {
-      if (action.payload === "asc") {
-        state.products.sort((a, b) => a.price - b.price);
-      } else {
-        state.products.sort((a, b) => b.price - a.price);
-      }
-    },
+    // sortProductByPrice: (state, action: PayloadAction<"asc" | "desc">) => {
+    //   if (action.payload === "asc") {
+    //     state.products.sort((a, b) => (a.price && b.price) && (a.price - b.price));
+    //   } else {
+    //     state.products.sort((a, b) => b.price - a.price);
+    //   }
+    // },
   },
   extraReducers: (build) => {
     build
@@ -169,5 +169,5 @@ const productsSlice = createSlice({
 });
 
 const productsReducer = productsSlice.reducer;
-export const { cleanUpProductReducer, updateOneProduct, sortProductByPrice } = productsSlice.actions;
+export const { cleanUpProductReducer, updateOneProduct } = productsSlice.actions;
 export default productsReducer;

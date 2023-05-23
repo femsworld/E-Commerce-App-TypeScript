@@ -18,12 +18,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const dispatch = useAppDispatch();
   const { items } = useAppSelector((state) => state.cartReducer);
 
-  // dispatch(addItemToCart(items));
-
   const addOneItemToCart = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     dispatch(addItemToCart(product));
-    // console.log("Checking for cart clicks")
   };
 
   return (
@@ -31,13 +28,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <h3>{product.title}</h3>
       <img
         src={
-          product.category.image
+          product.category && product.category.image
           ? product.category.image
           : "https://media.cnn.com/api/v1/images/stellar/prod/230124153647-01-monterey-park-vigil.jpg?c=16x9&q=w_800,c_fill"
         }
         className="card-img-top"
         alt="..."
-        // style={{ width: '100%', height: 'auto' }}
         style={{ width: "100%", height: "auto", borderRadius: "8px" }}
       />
       <p>{product.price} Euros</p>

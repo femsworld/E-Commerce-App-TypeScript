@@ -2,11 +2,12 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Category } from "../../types/Category";
 import axios, { AxiosError } from "axios";
 import { ProductByCategory } from "../../types/ProductByCategory";
+import { Product } from "../../types/Product";
 
 // Define the initial state for the product category
 interface CategoryReducer {
   categories: Category[]
-  productByCategory: ProductByCategory[]
+  productByCategory: Product[]
   loading: boolean
   error: string
 }
@@ -100,8 +101,6 @@ const categoryReducerSlice = createSlice({
 });
 
 const categoryReducer = categoryReducerSlice.reducer;
-// Extract the action creators from the slice
-export const { setCategories, selectCategory } = categoryReducerSlice.actions;
 
-// Export the categoryReducerReducer
+export const { setCategories, selectCategory } = categoryReducerSlice.actions;
 export default categoryReducer;
