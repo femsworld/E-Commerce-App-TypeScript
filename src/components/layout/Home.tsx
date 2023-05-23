@@ -18,11 +18,11 @@ import {
 import { ProductByCategory } from "../../types/ProductByCategory";
 import { fabClasses } from "@mui/material";
 
-const getFilteredProductList = (products: Product[], search: string) => {
-  return products.filter((product) =>
-    product.title && product.title.toLowerCase().includes(search.toLocaleLowerCase())
-  );
-};
+// const getFilteredProductList = (products: Product[], search: string) => {
+//   return products.filter((product) =>
+//     product.title && product.title.toLowerCase().includes(search.toLocaleLowerCase())
+//   );
+// };
   
 const getProductList = (products: Product[], productByCategory: Product[]) => {
   return productByCategory.length > 0 ? productByCategory : products
@@ -31,15 +31,12 @@ const getProductList = (products: Product[], productByCategory: Product[]) => {
 const Home = () => {
   const dispatch = useAppDispatch();
   const [search, setSearch] = useState("");
-  // const [items, setItems] = useState([]); // This is the items to be displayed on every render
   const [items, setItems] = useState<Product[]>([]);
-  // const [itemsByProductCategories, setItemsByProductCategories] = useState(false)
   const { products } = useAppSelector((state) => state.productsReducer);
   const { categories } = useAppSelector((state) => state.categoryReducer);
   const { productByCategory } = useAppSelector(
     (state) => state.categoryReducer
   );
-  // const filterProducts = getFilteredProductList(products, search);
   const [page, setPage] = useState(1);
 
   const filterProducts = getProductList(products, productByCategory);
@@ -65,7 +62,7 @@ const Home = () => {
   useEffect(() => {
       dispatch(fetchAllProducts({ offset: 1, limit: 6 }));
       dispatch(fetchAllCategories());
-  }, []); // Add a variable to the dependency array to track when user has selected a category
+  }, []); 
 
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
