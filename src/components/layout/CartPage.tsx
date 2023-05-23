@@ -6,16 +6,7 @@ import { addItemToCart } from '../../redux/reducers/cartReducer'
 const CartPage = () => {
 const dispatch = useAppDispatch()
 const { items } = useAppSelector((state) => state.cartReducer)
-
-// const itemsInCart = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-//     event.preventDefault();
-//     dispatch(addItemToCart(items));
-//     console.log("Checking for items in cart")
-//   };
-
-useEffect(() => {
-    dispatch(addItemToCart(items))
-}, [])
+const { totalAmount } = useAppSelector((state) => state.cartReducer)
 
   return (
     <div>
@@ -29,11 +20,12 @@ useEffect(() => {
               <p>{item.title}</p>
               <p>Quantity: {item.quantity}</p>
               <p>Price: {item.price} Euros</p>
+              <p>Item Id: {item.id} </p>
             </li>
-            
           ))}
         </ul>
       )}
+      <p>Total Amount: {totalAmount} Euros </p>
     </div>
   )
 }

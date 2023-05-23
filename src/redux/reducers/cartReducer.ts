@@ -4,8 +4,8 @@ import { CartItem } from "../../types/CartItem";
 
 interface CartReducer {
   items: CartItem[];
-  totalAmount: 0;
-  count: 0
+  totalAmount: number;
+  count: number
 }
 
 const initialState: CartReducer = {
@@ -20,14 +20,14 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addItemToCart: (state, action) => {
-      let newItem = action.payload;
+      let newItem: CartItem = action.payload;
       const existingItem = state.items.find((item) => item.id === newItem.id);
 
       if (existingItem) {
         const selectedProduct = state.items.find(
           (item) => item.id === action.payload.id
         );
-        if (selectedProduct) {
+        if (selectedProduct && selectedProduct.quantity) {
           selectedProduct.quantity += 1;
           return;
         }
@@ -35,7 +35,9 @@ const cartSlice = createSlice({
         newItem = { ...newItem, quantity: 1 };
         state.items.push(newItem);
       }
-        state.totalAmount += newItem.price * newItem.quantity;
+        // state.totalAmount += newItem.price * newItem.quantity;
+        state.totalAmount += Number(newItem.price) * Number(newItem.quantity);
+        console.log("This is total amount", state.totalAmount)
     },
     // removeItemFromCart: (state, action) => {
     //   const itemId = action.payload;
