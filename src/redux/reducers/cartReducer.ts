@@ -20,36 +20,20 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addItemToCart: (state, action) => {
-      let newItem: CartItem = action.payload;
+      const newItem: CartItem = action.payload;
       const existingItem = state.items.find((item) => item.id === newItem.id);
-
       if (existingItem) {
-        const selectedProduct = state.items.find(
-          (item) => item.id === action.payload.id
-        );
-        if (selectedProduct && selectedProduct.quantity) {
-          selectedProduct.quantity += 1;
-          return;
+        if (existingItem.quantity) {
+          existingItem.quantity += 1;
+        } else {
+          existingItem.quantity = 1;
         }
       } else {
-        newItem = { ...newItem, quantity: 1 };
-        state.items.push(newItem);
+        const newCartItem = { ...newItem, quantity: 1 };
+        state.items.push(newCartItem);
       }
-        // state.totalAmount += newItem.price * newItem.quantity;
-        state.totalAmount += Number(newItem.price) * Number(newItem.quantity);
-        console.log("This is total amount", state.totalAmount)
+      state.totalAmount += newItem.price;
     },
-    // removeItemFromCart: (state, action) => {
-    //   const itemId = action.payload;
-    //   // Find the item in the cart
-    //     // const existingItem = state.items.find(item => item.id === itemId);
-    //     // if (existingItem) {
-    //     //   // Subtract the item's price from the total
-    //     //   state.total -= existingItem.price * existingItem.quantity;
-    //     //   // Remove the item from the cart
-    //     //   state.items = state.items.filter(item => item.id !== itemId);
-    //     // }
-    // },
     clearCart: (state) => {
       // Clear the cart by resetting the state to the initial state
       return initialState;

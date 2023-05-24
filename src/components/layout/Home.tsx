@@ -87,15 +87,6 @@ const Home = () => {
         ))}
       </div>
       <div className="product-grid">
-        {/* {filterProducts.map(
-          (
-            product // Change filterProducts to items defined in the state
-          ) => (
-            <div key={product.id}>
-              <ProductCard product={product} />
-            </div>
-          )
-        )} */}
         {filterProducts.map((product) => (
           <div key={product.id}>
             <ProductCard product={product} />
