@@ -1,16 +1,20 @@
-import React, { useEffect } from 'react'
-import useAppDispatch from '../../hooks/useAppDispatch'
-import useAppSelector from '../../hooks/useAppSelector'
-import { addItemToCart, clearCart } from '../../redux/reducers/cartReducer'
+import React, { useEffect } from "react";
+import useAppDispatch from "../../hooks/useAppDispatch";
+import useAppSelector from "../../hooks/useAppSelector";
+import { addItemToCart, clearCart, removeItemToCart } from "../../redux/reducers/cartReducer";
 
 const CartPage = () => {
-const dispatch = useAppDispatch()
-const { items } = useAppSelector((state) => state.cartReducer)
-const { totalAmount } = useAppSelector((state) => state.cartReducer)
+  const dispatch = useAppDispatch();
+  const { items } = useAppSelector((state) => state.cartReducer);
+  const { totalAmount } = useAppSelector((state) => state.cartReducer);
 
-const handleClearCart = () => { dispatch(clearCart());
-};
-
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+  const handleIncreaseQuantity = (itemId: any) => {
+    dispatch(addItemToCart({ id: itemId }));
+  };
+  const handleDecreaseQuantity = (itemId: any) => {dispatch(removeItemToCart({id: itemId}))};
 
   return (
     <div>
@@ -25,6 +29,8 @@ const handleClearCart = () => { dispatch(clearCart());
               <p>Quantity: {item.quantity}</p>
               <p>Price: {item.price} Euros</p>
               <p>Item Id: {item.id} </p>
+              <button onClick={() => handleIncreaseQuantity(item.id)}>+</button>
+              <button onClick={() => handleDecreaseQuantity(item.id)}>-</button>
             </li>
           ))}
         </ul>
@@ -32,7 +38,7 @@ const handleClearCart = () => { dispatch(clearCart());
       <p>Total Amount: {totalAmount} Euros </p>
       <button onClick={handleClearCart}>Clear Cart</button>
     </div>
-  )
-}
+  );
+};
 
-export default CartPage
+export default CartPage;
