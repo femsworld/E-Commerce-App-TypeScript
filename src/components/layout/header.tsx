@@ -21,6 +21,7 @@ import { useState } from "react";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { addItemToCart } from "../../redux/reducers/cartReducer";
 import { Link } from "react-router-dom";
+import SignUp from "../SignUp";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -71,39 +72,24 @@ export default function Header() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [showCartPage, setShowCartPage] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false)
 
-  // const handleCartIconClick = (
-  //   event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  // ) => {
-  //   // event.preventDefault
-  //   setShowCartPage(true);
-  //   console.log("Cart is clicked");
-  //   // dispatchEvent(addItemToCart())
-  // };
+  const handleSignUpClick = () => { setShowSignUp(!showSignUp) };
+
   const handleCartIconClick = () => {
-    // event.preventDefault
     if (!showCartPage) {
       setShowCartPage(true);
-      console.log("Cart is clicked");
-      // dispatchEvent(addItemToCart())
     }
   };
 
-  const handleCartPageClose = () => {
-    setShowCartPage(false);
-  };
+  const handleCartPageClose = () => { setShowCartPage(false) };
 
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => { setAnchorEl(event.currentTarget) };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
+  const handleMobileMenuClose = () => { setMobileMoreAnchorEl(null) };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
+  const handleMenuClose = () => { setAnchorEl(null);
+  handleMobileMenuClose();
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -127,9 +113,23 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      {/* <MenuItem onClick={handleSignUpClick}>SignUp</MenuItem> */}
+      <MenuItem>
+    <Link to="/signup" style={{ textDecoration: 'none', color: 'inherit' }}>
+     Sign Up
+    </Link>
+    </MenuItem>
+    <MenuItem>
+    <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
+     Login
+    </Link>
+    </MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>Login</MenuItem> */}
     </Menu>
   );
+  {showSignUp && <SignUp />}
+
+
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -178,7 +178,7 @@ export default function Header() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>Login</p>
       </MenuItem>
     </Menu>
   );

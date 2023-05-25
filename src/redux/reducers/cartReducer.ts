@@ -14,9 +14,6 @@ const initialState: CartReducer = {
   count: 0,
 };
 
-// const calculateTotalAmount = (items: CartItem[]) => {
-//   return items.reduce((total, item) => total + item.price, 0);
-// };
 // Create a slice for the cartReducer
 const cartSlice = createSlice({
   name: "cart",
@@ -50,17 +47,41 @@ const cartSlice = createSlice({
         state.totalAmount -= newCartItem.price; 
       }
     },
+    // deleteItemFromCart: (state, action) => {
+    //   const itemId: number = action.payload;
+    //   const existingItemIndex = state.items.findIndex((item) => item.id === itemId);
+    //   if (existingItemIndex !== -1) {
+    //     const existingItem = state.items[existingItemIndex];
+    //     if (existingItem.quantity && existingItem.quantity > 1) {
+    //       if(existingItem.quantity){
+    //         existingItem.quantity -= 1;
+    //         state.totalAmount -= existingItem.price;
+    //       }
+          
+    //     } else {
+    //       state.items.splice(existingItemIndex, 1);
+    //       state.totalAmount -= existingItem.price;
+    //     }
+    //   }
+    // },
+    deleteItemFromCart: (state, action) => {
+      const itemId: number = action.payload;
+      const existingItemIndex = state.items.findIndex((item) => item.id === itemId);
+      if (existingItemIndex !== -1) {
+        const existingItem = state.items[existingItemIndex];
+        if(existingItem.quantity){
+          // state.totalAmount -= existingItem.price * existingItem.quantity;
+        state.items.splice(existingItemIndex);
+        }
+      }
+    },
     clearCart: (state) => {
-      // Clear the cart by resetting the state to the initial state
       return initialState;
     },
   },
 });
 
+export const { addItemToCart, removeItemToCart, deleteItemFromCart, clearCart } = cartSlice.actions;
 
-// Extract the action creators from the slice
-export const { addItemToCart, removeItemToCart, clearCart } = cartSlice.actions;
-
-// Export the cartReducer
 const cartReducer = cartSlice.reducer;
 export default cartReducer;

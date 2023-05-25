@@ -68,8 +68,6 @@ const Home = () => {
     setSearch(e.target.value);
   };
 
-  console.log("Product By category", productByCategory);
-
   return (
     <div>
       <div>

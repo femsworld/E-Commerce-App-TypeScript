@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
-import { addItemToCart, clearCart, removeItemToCart } from "../../redux/reducers/cartReducer";
+import { addItemToCart, clearCart, deleteItemFromCart, removeItemToCart } from "../../redux/reducers/cartReducer";
 
 const CartPage = () => {
   const dispatch = useAppDispatch();
@@ -15,6 +15,8 @@ const CartPage = () => {
     dispatch(addItemToCart({ id: itemId }));
   };
   const handleDecreaseQuantity = (itemId: any) => {dispatch(removeItemToCart({id: itemId}))};
+  const handleDeleteQuantity = (itemId: any) => {dispatch(deleteItemFromCart({itemId}))};
+  
 
   return (
     <div>
@@ -31,6 +33,7 @@ const CartPage = () => {
               <p>Item Id: {item.id} </p>
               <button onClick={() => handleIncreaseQuantity(item.id)}>+</button>
               <button onClick={() => handleDecreaseQuantity(item.id)}>-</button>
+              <button onClick={() => handleDeleteQuantity(item.id)}>Remove item</button>
             </li>
           ))}
         </ul>
