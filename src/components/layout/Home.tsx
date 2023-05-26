@@ -40,6 +40,7 @@ const Home = () => {
   const [page, setPage] = useState(1);
 
   const filterProducts = getProductList(products, productByCategory);
+  const { userProfile } = useAppSelector(state => state.authenticationReducer);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -72,6 +73,7 @@ const Home = () => {
     <div>
       <div>
         <Header />
+        <h2>Welcome, {userProfile?.name}!</h2>
       </div>
       <div className="category-grid">
         {categories.map((category) => (

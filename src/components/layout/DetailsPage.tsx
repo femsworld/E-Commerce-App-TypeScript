@@ -46,17 +46,6 @@ const DetailsPage = () => {
         <button onClick={goToPreviousImage}>Previous</button>
         <button onClick={goToNextImage}>Next</button>
       </div>
-      {/* <div style={{ overflowX: "scroll", whiteSpace: "nowrap" }}>
-        {singleProduct?.images &&
-          singleProduct.images.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt=""
-              style={{ marginRight: "10px" }}
-            />
-          ))}
-      </div> */}
       <h4> {singleProduct?.title} </h4>
       <h4> Category: {singleProduct?.category?.name} </h4>
       <h4> Price: {singleProduct?.price} Euros </h4>

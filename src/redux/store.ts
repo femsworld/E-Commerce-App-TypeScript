@@ -4,10 +4,7 @@ import usersReducer from "./reducers/usersReducer";
 // import favReducer from "./reducers/favReducer";
 import categoryReducer from "./reducers/categoryReducer";
 import cartReducer from "./reducers/cartReducer";
-
-// const favData = JSON.parse(localStorage.getItem("fav") || "")
-// const favData = localStorage.getItem("fav");
-// const parsedFavData = favData ? JSON.parse(favData) : null;
+import authenticationReducer from "./reducers/authenticationReducer";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +13,7 @@ const store = configureStore({
     // favReducer,
     categoryReducer,
     cartReducer,
+    authenticationReducer,
   },
   preloadedState: {
     productsReducer: {

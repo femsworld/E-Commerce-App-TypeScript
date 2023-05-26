@@ -142,9 +142,9 @@ const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    setCurrentUser: (state, action: PayloadAction<User>) => {
-      state.currentUser = action.payload;
-    },
+    // setCurrentUser: (state, action: PayloadAction<User>) => {
+    //   state.currentUser = action.payload;
+    // },
     createUser: (state, action: PayloadAction<User>) => {
       state.users.push(action.payload);
     },

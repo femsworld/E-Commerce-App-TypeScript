@@ -73,6 +73,7 @@ export default function Header() {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [showCartPage, setShowCartPage] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false)
+  const userProfile = useAppSelector((state) => state.authenticationReducer.userProfile);
 
   const handleSignUpClick = () => { setShowSignUp(!showSignUp) };
 
@@ -113,7 +114,6 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {/* <MenuItem onClick={handleSignUpClick}>SignUp</MenuItem> */}
       <MenuItem>
     <Link to="/signup" style={{ textDecoration: 'none', color: 'inherit' }}>
      Sign Up
@@ -128,8 +128,6 @@ export default function Header() {
     </Menu>
   );
   {showSignUp && <SignUp />}
-
-
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -183,67 +181,123 @@ export default function Header() {
     </Menu>
   );
 
+  // return (
+  //   <Box sx={{ flexGrow: 1 }}>
+  //     <AppBar position="fixed">
+  //       <Toolbar>
+  //         <IconButton
+  //           size="large"
+  //           edge="start"
+  //           color="inherit"
+  //           aria-label="open drawer"
+  //           sx={{ mr: 2 }}
+  //         >
+  //           <MenuIcon />
+  //         </IconButton>
+  //         <Typography
+  //           variant="h6"
+  //           noWrap
+  //           component="div"
+  //           sx={{ display: { xs: "none", sm: "block" } }}
+  //         >
+  //           HOME
+  //         </Typography>
+  //         <Search>
+  //           <SearchIconWrapper>
+  //             <SearchIcon />
+  //           </SearchIconWrapper>
+  //           <StyledInputBase
+  //             placeholder="Search…"
+  //             inputProps={{ "aria-label": "search" }}
+  //           />
+  //         </Search>
+  //         <Box sx={{ flexGrow: 1 }} />
+  //         <Box sx={{ display: { xs: "none", md: "flex" } }}>
+  //           {/* <IconButton size="large" aria-label="shopping cart" color="inherit" onClick={handleCartIconClick}>
+  //           <Badge badgeContent={items.length} color="error">
+  //           </Badge>
+  //             <ShoppingCartIcon />
+  //           </IconButton> */}
+  //           <Link to="/cart" onClick={handleCartIconClick}>
+  //             <IconButton
+  //               size="large"
+  //               aria-label="shopping cart"
+  //               color="inherit"
+  //             >
+  //               <Badge badgeContent={items.length} color="error" />
+  //               <ShoppingCartIcon />
+  //             </IconButton>
+  //           </Link>
+
+  //           <IconButton
+  //             size="large"
+  //             edge="end"
+  //             aria-label="account of current user"
+  //             aria-controls={menuId}
+  //             aria-haspopup="true"
+  //             onClick={handleProfileMenuOpen}
+  //             color="inherit"
+  //           >
+  //             <AccountCircle />
+  //           </IconButton>
+  //         </Box>
+  //         <Box sx={{ display: { xs: "flex", md: "none" } }}>
+  //           <IconButton
+  //             size="large"
+  //             aria-label="show more"
+  //             aria-controls={mobileMenuId}
+  //             aria-haspopup="true"
+  //             onClick={handleMobileMenuOpen}
+  //             color="inherit"
+  //           >
+  //             <MoreIcon />
+  //           </IconButton>
+  //         </Box>
+  //       </Toolbar>
+  //     </AppBar>
+  //     {renderMobileMenu}
+  //     {renderMenu}
+  //   </Box>
+  // );
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
+          <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
+          <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
             HOME
           </Typography>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
+            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            {/* <IconButton size="large" aria-label="shopping cart" color="inherit" onClick={handleCartIconClick}>
-            <Badge badgeContent={items.length} color="error">
-            </Badge>
-              <ShoppingCartIcon />
-            </IconButton> */}
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <Link to="/cart" onClick={handleCartIconClick}>
-              <IconButton
-                size="large"
-                aria-label="shopping cart"
-                color="inherit"
-              >
+              <IconButton size="large" aria-label="shopping cart" color="inherit">
                 <Badge badgeContent={items.length} color="error" />
                 <ShoppingCartIcon />
               </IconButton>
             </Link>
-
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            {!userProfile && (
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            )}
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="show more"
@@ -259,6 +313,7 @@ export default function Header() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {showSignUp && <SignUp />}
     </Box>
   );
 }

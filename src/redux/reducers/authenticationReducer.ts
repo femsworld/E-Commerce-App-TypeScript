@@ -5,6 +5,7 @@ import axios, { AxiosError } from "axios";
 import { NewProduct } from "../../types/NewProduct";
 import { SingleProduct } from "../../types/SingleProduct";
 import { ProductUpdate } from "../../types/ProductUpdate";
+import { UserProfile } from "../../types/UserProfile";
 
 interface AuthenticationReducer {
   loading: boolean;
@@ -12,50 +13,38 @@ interface AuthenticationReducer {
   email: string;
   password: string;
   access_token?: string;
-//   data: {
-//     access_token: ""
-//     refresh_token: ""
-//   }
+  userProfile?: UserProfile
 }
-
-interface userProfile {
-    loading: boolean;
-    error: string;
-    email: string;
-    role: "customer" | "admin" ;
-    avatar: ""
-  }
 
 export interface loginQuery {
   email: string;
   password: string;
 }
 
-// export interface FetchSingleProductQuery {
-//   id: string | undefined;
-// }
-
 const initialState: AuthenticationReducer = {
   loading: false,
   error: "",
   email: "",
   password: "",
-//   data: { access_token: "", refresh_token: "" }
 };
 
 export const userLogin = createAsyncThunk(
   "userLogin",
+//   async ({ email, password }: loginQuery) => {
   async ({ email, password }: loginQuery) => {
     try {
       const result = await axios.post<AuthenticationReducer>(
         `https://api.escuelajs.co/api/v1/auth/login`, {email, password}
       );
-      const userProfile = await axios.get<userProfile>(
+      const userProfile = await axios.get<UserProfile>(
         `https://api.escuelajs.co/api/v1/auth/profile`, { headers: { Authorization: `Bearer ${result.data.access_token}` } }
       );
-    //   return result.data;    
-      console.log("Login result", result)
-      console.log("userProfilet", userProfile)
+      return {
+        access_token: result.data.access_token!,
+        userProfile: userProfile.data,
+      }; 
+    //   console.log("Login result", result)
+    //   console.log("userProfilet", userProfile)
       //save result to local storage here
     } catch (e) {
       const error = e as AxiosError;
@@ -64,6 +53,9 @@ export const userLogin = createAsyncThunk(
   }
 );
 
+export const userLogout = createAsyncThunk("userLogout", async () => {
+    return null;
+  });
 // export const createNewProduct = createAsyncThunk(
 //   "createNewProduct",
 //   async (product: NewProduct) => {
@@ -83,59 +75,54 @@ export const userLogin = createAsyncThunk(
 //   }
 // );
 
-// export const fetchSingleProduct = createAsyncThunk(
-//   "fetchSingleProduct",
-//   async ({ id }: FetchSingleProductQuery) => {
-//     try {
-//       const result = await axios.get<SingleProduct>(
-//         `https://api.escuelajs.co/api/v1/products/${id}`
-//       );
-//       return result.data;
-//     } catch (e) {
-//       const error = e as AxiosError;
-//       return error.message;
-//     }
-//   }
-// );
-
-// const authenticationSlice = createSlice({
-//   name: "users",
-//   initialState,
-//   reducers: {
-//     cleanUpauthenticationReducer: (state) => {
-//       return initialState;
-//     },
-//     loggedInUser: (state, action: PayloadAction<AuthenticationReducer>) => {
-//         const { email, password } = action.payload;
-//         const updatedUser = state.email(() => {
-//         if (email && password === email && password) {
-//             return {...updatedUser, update}
-//         }
-//         return updatedUser;
-//     })
-//     return {
-//         ...state, users: updatedUser
-//     }
-//     },
-//     // sortProductByPrice: (state, action: PayloadAction<"asc" | "desc">) => {
-//     //   if (action.payload === "asc") {
-//     //     state.products.sort((a, b) => (a.price && b.price) && (a.price - b.price));
-//     //   } else {
-//     //     state.products.sort((a, b) => b.price - a.price);
-//     //   }
-//     // },
-//   },
-//   extraReducers: (build) => {
-//     build
-//       .addCase(fetchAllProducts.pending, (state, action) => {
-//         state.loading = true;
-//       })
-//       .addCase(fetchAllProducts.rejected, (state, action) => {
-//         state.loading = false;
-//         state.error =
-//           "This action cannot be completed at the moment, please try again later";
-//       })
-//       .addCase(fetchAllProducts.fulfilled, (state, action) => {
+const authenticationSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    cleanUpAuthenticationReducer: (state) => {
+      return initialState;
+    },
+    setCurrentUser: (state, action: PayloadAction<UserProfile>) => {
+      state.userProfile = action.payload;
+    },
+  },
+  extraReducers: (build) => {
+    build
+      .addCase(userLogin.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(userLogin.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          "This action cannot be completed at the moment, please try again later";
+      })
+    //   .addCase(userLogin.fulfilled, (state, action) => {
+    //     state.loading = false;
+    //     state.access_token = action.payload.access_token;
+    //     state.userProfile = action.payload.userProfile; // Store the userProfile in the state
+    //   })
+    .addCase(userLogin.fulfilled, (state, action) => {
+        state.loading = false;
+        // if (action.payload) {
+        //   state.access_token = action.payload.access_token;
+        //   state.userProfile = action.payload.userProfile;
+        // } else {
+          // Handle the case where payload is undefined
+          // You can set appropriate values or handle the error state
+        //   state.error = "User profile data is missing";
+        // }
+        // state.loading = false;
+        state.access_token = (action.payload as { access_token: string }).access_token;
+        state.userProfile = (action.payload as { userProfile: UserProfile }).userProfile;
+      })
+      .addCase(userLogout.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(userLogout.fulfilled, (state) => {
+        return initialState;
+      });
+      
+//       .addCase(userLogin.fulfilled, (state, action) => {
 //         state.loading = false;
 //         if (typeof action.payload === "string") {
 //           state.error = action.payload;
@@ -175,9 +162,9 @@ export const userLogin = createAsyncThunk(
 //         state.error =
 //           "This action cannot be completed at the moment, please try again later";
 //       });
-//   },
-// });
+  },
+});
 
-// const productsReducer = productsSlice.reducer;
-// export const { cleanUpProductReducer, updateOneProduct } = productsSlice.actions;
-// export default productsReducer;
+const authenticationReducer = authenticationSlice.reducer;
+export const { cleanUpAuthenticationReducer } = authenticationSlice.actions;
+export default authenticationReducer
