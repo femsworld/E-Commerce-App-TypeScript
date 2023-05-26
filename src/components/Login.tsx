@@ -22,12 +22,14 @@ import ProfilePage from './layout/ProfilePage';
 
   useEffect(() => {
     const storedUserProfile = localStorage.getItem('userProfile');
-    if (storedUserProfile) {
+    if (storedUserProfile  && isLoggedIn) {
       const parsedUserProfile = JSON.parse(storedUserProfile);
       setUserProfile(parsedUserProfile);
-      setIsLoggedIn(true);
     }
-  }, []);
+    else {
+      setUserProfile(null);
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (userProfile) {
@@ -42,10 +44,6 @@ import ProfilePage from './layout/ProfilePage';
       console.log('Logging in...');
       await dispatch(userLogin({ email, password })).unwrap();
       setIsLoggedIn(true);
-      // You can navigate to the homepage here
-      // For example, if you're using React Router, you can use history.push('/')
-      // history.push('/');
-      // window.location.href = '/';
     } catch (error) {
       setError('Login failed. Please try again.');
     }
@@ -54,6 +52,7 @@ import ProfilePage from './layout/ProfilePage';
   const handleLogout = () => {
     dispatch(userLogout());
     setIsLoggedIn(false);
+    window.location.href = '/';
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

@@ -13,7 +13,8 @@ interface AuthenticationReducer {
   email: string;
   password: string;
   access_token?: string;
-  userProfile?: UserProfile
+  userProfile?: UserProfile | null | undefined;
+  isLoggedIn: boolean;
 }
 
 export interface loginQuery {
@@ -26,6 +27,7 @@ const initialState: AuthenticationReducer = {
   error: "",
   email: "",
   password: "",
+  isLoggedIn: false
 };
 
 export const userLogin = createAsyncThunk(
@@ -84,6 +86,11 @@ const authenticationSlice = createSlice({
     },
     setCurrentUser: (state, action: PayloadAction<UserProfile>) => {
       state.userProfile = action.payload;
+      state.isLoggedIn = true
+    },
+    currentUserLogOut: (state) => {
+      state.userProfile = null;
+      state.isLoggedIn = false; // Set isLoggedIn to false on logout
     },
   },
   extraReducers: (build) => {
