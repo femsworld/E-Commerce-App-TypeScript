@@ -9,8 +9,13 @@ const CartPage = () => {
   const { totalAmount } = useAppSelector((state) => state.cartReducer);
 
   const handleClearCart = () => {
-    dispatch(clearCart());
+    const confirmed = window.confirm("Are you sure you want to empty your cart?");
+    if (confirmed) {
+      dispatch(clearCart());
+    }
   };
+
+  
   const handleIncreaseQuantity = (itemId: any) => {
     dispatch(addItemToCart({ id: itemId }));
   };
