@@ -1,7 +1,8 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { Product } from "../../types/Product";
 import axios, { AxiosError } from "axios";
+
+import { Product } from "../../types/Product";
 import { NewProduct } from "../../types/NewProduct";
 import { SingleProduct } from "../../types/SingleProduct";
 import { ProductUpdate } from "../../types/ProductUpdate";
@@ -107,13 +108,6 @@ const productsSlice = createSlice({
         products,
       };
     },
-    // sortProductByPrice: (state, action: PayloadAction<"asc" | "desc">) => {
-    //   if (action.payload === "asc") {
-    //     state.products.sort((a, b) => (a.price && b.price) && (a.price - b.price));
-    //   } else {
-    //     state.products.sort((a, b) => b.price - a.price);
-    //   }
-    // },
   },
   extraReducers: (build) => {
     build

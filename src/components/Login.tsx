@@ -1,64 +1,60 @@
-  import React, { useEffect, useState } from 'react';
-  import jwt_decode from 'jwt-decode';
-  import useAppDispatch from '../hooks/useAppDispatch';
-  import { userLogin, userLogout } from '../redux/reducers/authenticationReducer';
-  import useAppSelector from '../hooks/useAppSelector';
-  import { UserProfile } from '../types/UserProfile';
-import { setCurrentUser } from '../redux/reducers/usersReducer';
-import Home from './layout/Home';
-import ProfilePage from './layout/ProfilePage';
+import React, { useEffect, useState } from "react";
+import useAppDispatch from "../hooks/useAppDispatch";
+import { userLogin, userLogout } from "../redux/reducers/authenticationReducer";
 
-  interface DecodedToken {
-    name: string;
-  }
+import { UserProfile } from "../types/UserProfile";
+import Home from "./layout/Home";
 
-  const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+interface DecodedToken {
+  name: string;
+}
+
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const storedUserProfile = localStorage.getItem('userProfile');
-    if (storedUserProfile  && isLoggedIn) {
+    const storedUserProfile = localStorage.getItem("userProfile");
+    if (storedUserProfile && isLoggedIn) {
       const parsedUserProfile = JSON.parse(storedUserProfile);
       setUserProfile(parsedUserProfile);
-    }
-    else {
+    } else {
       setUserProfile(null);
     }
   }, [isLoggedIn]);
 
   useEffect(() => {
     if (userProfile) {
-      localStorage.setItem('userProfile', JSON.stringify(userProfile));
+      localStorage.setItem("userProfile", JSON.stringify(userProfile));
     } else {
-      localStorage.removeItem('userProfile');
+      localStorage.removeItem("userProfile");
     }
   }, [userProfile]);
 
   const handleLogin = async () => {
     try {
-      console.log('Logging in...');
+      console.log("Logging in...");
       await dispatch(userLogin({ email, password })).unwrap();
       setIsLoggedIn(true);
     } catch (error) {
-      setError('Login failed. Please try again.');
+      setError("Login failed. Please try again.");
     }
   };
 
   const handleLogout = () => {
     dispatch(userLogout());
     setIsLoggedIn(false);
-    window.location.href = '/';
+    window.location.href = "/";
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!email || !password) {
-      setError('Username and password are required');
+      setError("Username and password are required");
     } else {
       handleLogin();
     }
@@ -73,7 +69,6 @@ import ProfilePage from './layout/ProfilePage';
           <button onClick={handleLogout}>Logout</button>
           {/* <ProfilePage></ProfilePage> */}
           <Home></Home>
-          
         </div>
       ) : (
         <form onSubmit={handleSubmit}>

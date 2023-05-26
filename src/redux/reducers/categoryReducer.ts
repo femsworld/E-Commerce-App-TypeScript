@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Category } from "../../types/Category";
+
 import axios, { AxiosError } from "axios";
-import { ProductByCategory } from "../../types/ProductByCategory";
+
+import { Category } from "../../types/Category";
 import { Product } from "../../types/Product";
 
-// Define the initial state for the product category
 interface CategoryReducer {
   categories: Category[]
   productByCategory: Product[]
@@ -53,7 +53,6 @@ export const fetchAllCategoriesId = createAsyncThunk(
   }
 )
 
-// Create a slice for the categoryReducerReducer
 const categoryReducerSlice = createSlice({
   name: "categories",
   initialState,
