@@ -7,23 +7,15 @@
 
 This project requires implementation of TypeScript and SASS.
 
-## Requirement
+## About the project
 
-1. Use the API endpoint [https://fakeapi.platzi.com/](https://fakeapi.platzi.com/) to create an e-commerce website. Read the documentation and learn how to use the different endpoints.
-2. Create at lease 4 pages (can be more if you want): Home page, product page,
-profile page (only available if user logins), and cart page (cart could be a page or a modal)
-3. Create Redux store for following features:
-    - product reducer: get all products, find a single products, sort products by
-    categories, sort products by price. Create, update and delete a product (enable update & delete features only for admin of the webapp. For example, you can check if user is your admin account before let them delete product)
-    - user reducer: Register and Login
-    - cart reducer: add product to cart, remove products, update products's quantity in cart
-4. When adding routers to your application, programatically set certain routes to be private. For example, route to user profile page should not be accessible if user has not logged in.
-5. Deploy the application and rewrite README file.
+1. This an an e-commerce application that fetches it data from this API endpoint [https://fakeapi.platzi.com/](https://fakeapi.platzi.com/)
+2. This project was created with the react-redux toolkits. It contains the Homepage, where all the products are displayed. The projects could also be displayed by categories,
+3. It also has a profile page which is only available when user login
+4. Users can get items in the carts. The items in the carts udates only when uniques items are added to cart, but user can add of the same items to the cart ether from the homepage of the cart page
+4. The app is still under construction, new updates and features will be added 
+5. Deployment link will be added when the application is in a better state.
 
-## Bonus
-
-1. Use context API to switch theme
-2. Implement unit testing for the reducers
 
 ## Instruction to start the project
 
@@ -35,17 +27,17 @@ Install all the dependencies
 
 ### `npm start`
 
+## Project tree
+
+├───components
+│   └───layout
+├───hooks
+├───redux
+│   └───reducers
+├───tests
+│   └───reducers
+└───types
+
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
