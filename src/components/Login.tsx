@@ -17,29 +17,30 @@ const Login = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const storedUserProfile = localStorage.getItem("userProfile");
-    if (storedUserProfile && isLoggedIn) {
-      const parsedUserProfile = JSON.parse(storedUserProfile);
-      setUserProfile(parsedUserProfile);
-    } else {
-      setUserProfile(null);
-    }
-  }, [isLoggedIn]);
+  // useEffect(() => {
+  //   const storedUserProfile = localStorage.getItem("userProfile");
+  //   if (storedUserProfile && isLoggedIn) {
+  //     const parsedUserProfile = JSON.parse(storedUserProfile);
+  //     setUserProfile(parsedUserProfile);
+  //   } else {
+  //     setUserProfile(null);
+  //   }
+  // }, [isLoggedIn]);
 
-  useEffect(() => {
-    if (userProfile) {
-      localStorage.setItem("userProfile", JSON.stringify(userProfile));
-    } else {
-      localStorage.removeItem("userProfile");
-    }
-  }, [userProfile]);
+  // useEffect(() => {
+  //   if (userProfile) {
+  //     localStorage.setItem("userProfile", JSON.stringify(userProfile));
+  //   } else {
+  //     localStorage.removeItem("userProfile");
+  //   }
+  // }, [userProfile]);
 
   const handleLogin = async () => {
     try {
       console.log("Logging in...");
       await dispatch(userLogin({ email, password })).unwrap();
       setIsLoggedIn(true);
+      window.location.href = "/";
     } catch (error) {
       setError("Login failed. Please try again.");
     }
@@ -61,17 +62,37 @@ const Login = () => {
   };
 
   return (
-    <div data-testid="login">
-      <h2>Login</h2>
-      {isLoggedIn ? (
-        <div>
-          <p>Welcome, {userProfile?.name}!</p>
-          <button onClick={handleLogout}>Logout</button>
-          {/* <ProfilePage></ProfilePage> */}
-          <Home></Home>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit}>
+    // <div data-testid="login">
+    //   <h2>Login</h2>
+    //   {isLoggedIn ? (
+    //     <div>
+    //       <p>Welcome, {userProfile?.name}!</p>
+    //       <button onClick={handleLogout}>Logout</button>
+    //       {/* <ProfilePage></ProfilePage> */}
+    //       <Home></Home>
+    //     </div>
+    //   ) : (
+    //     <form onSubmit={handleSubmit}>
+    //       <input
+    //         type="text"
+    //         name="email"
+    //         placeholder="Email"
+    //         value={email}
+    //         onChange={(e) => setEmail(e.target.value)}
+    //       />
+    //       <input
+    //         type="password"
+    //         name="password"
+    //         placeholder="Password"
+    //         value={password}
+    //         onChange={(e) => setPassword(e.target.value)}
+    //       />
+    //       <button>Login</button>
+    //       {error && <p>{error}</p>}
+    //     </form>
+    //   )}
+    // </div>
+    <form onSubmit={handleSubmit}>
           <input
             type="text"
             name="email"
@@ -89,8 +110,6 @@ const Login = () => {
           <button>Login</button>
           {error && <p>{error}</p>}
         </form>
-      )}
-    </div>
   );
 };
 

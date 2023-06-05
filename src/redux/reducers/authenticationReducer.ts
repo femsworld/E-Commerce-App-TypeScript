@@ -37,6 +37,10 @@ export const userLogin = createAsyncThunk(
       const userProfile = await axios.get<UserProfile>(
         `https://api.escuelajs.co/api/v1/auth/profile`, { headers: { Authorization: `Bearer ${result.data.access_token}` } }
       );
+      console.log("userprofile.statustext", userProfile.statusText )
+      if (userProfile.statusText === "OK"){
+        localStorage.setItem("userProfile", JSON.stringify(userProfile.data));
+      }
       return {
         access_token: result.data.access_token!,
         userProfile: userProfile.data,
@@ -49,6 +53,7 @@ export const userLogin = createAsyncThunk(
 );
 
 export const userLogout = createAsyncThunk("userLogout", async () => {
+    localStorage.clear()
     return null;
   });
 

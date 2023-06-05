@@ -17,11 +17,13 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import useAppSelector from "../../hooks/useAppSelector";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import { addItemToCart } from "../../redux/reducers/cartReducer";
 import { Link } from "react-router-dom";
 import SignUp from "../SignUp";
+import { User } from "../../types/User";
+import { userLogout } from "../../redux/reducers/authenticationReducer";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -72,10 +74,14 @@ export default function Header() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [showCartPage, setShowCartPage] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false)
-  const userProfile = useAppSelector((state) => state.authenticationReducer.userProfile);
+  const [showSignUp, setShowSignUp] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const userProfile = useAppSelector((state) => state.authenticationReducer.userProfile);
+  const [userProfile, setUserProfile] = useState<User | null>(null);
 
-  const handleSignUpClick = () => { setShowSignUp(!showSignUp) };
+  const handleSignUpClick = () => {
+    setShowSignUp(!showSignUp);
+  };
 
   const handleCartIconClick = () => {
     if (!showCartPage) {
@@ -83,20 +89,44 @@ export default function Header() {
     }
   };
 
-  const handleCartPageClose = () => { setShowCartPage(false) };
+  const handleCartPageClose = () => {
+    setShowCartPage(false);
+  };
 
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => { setAnchorEl(event.currentTarget) };
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-  const handleMobileMenuClose = () => { setMobileMoreAnchorEl(null) };
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
 
-  const handleMenuClose = () => { setAnchorEl(null);
-  handleMobileMenuClose();
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const storedUserProfile = localStorage.getItem("userProfile");
+
+  const handleLogout = () => {
+    dispatch(userLogout());
+    setIsLoggedIn(false);
+    // window.location.href = "/";
+  };
+
+  useEffect(() => {
+    if (storedUserProfile) {
+      const parsedUserProfile = JSON.parse(storedUserProfile);
+      setUserProfile(parsedUserProfile);
+    } else {
+      setUserProfile(null);
+    }
+  }, [storedUserProfile]);
+  
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -114,20 +144,36 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      
+      {!userProfile ? 
+      <><MenuItem>
+        <Link to="/signup" style={{ textDecoration: "none", color: "inherit" }}>
+          Sign Up
+        </Link>
+      </MenuItem>
       <MenuItem>
-    <Link to="/signup" style={{ textDecoration: 'none', color: 'inherit' }}>
-     Sign Up
-    </Link>
-    </MenuItem>
-    <MenuItem>
-    <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
-     Login
-    </Link>
-    </MenuItem>
+        <Link to="/login" style={{ textDecoration: "none", color: "inherit" }}>
+          Login
+        </Link>
+      </MenuItem></>
+      :
+      <><MenuItem>
+        <Link to="/profile" style={{ textDecoration: "none", color: "inherit" }}>
+          Profile
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link to="/" onClick={handleLogout} style={{ textDecoration: "none", color: "inherit" }}>
+          Log Out
+        </Link>
+      </MenuItem></>
+      }
       {/* <MenuItem onClick={handleMenuClose}>Login</MenuItem> */}
     </Menu>
   );
-  {showSignUp && <SignUp />}
+  {
+    showSignUp && <SignUp />;
+  }
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -166,7 +212,7 @@ export default function Header() {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      {/* <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -177,113 +223,58 @@ export default function Header() {
           <AccountCircle />
         </IconButton>
         <p>Login</p>
-      </MenuItem>
+      </MenuItem> */}
     </Menu>
   );
 
-  // return (
-  //   <Box sx={{ flexGrow: 1 }}>
-  //     <AppBar position="fixed">
-  //       <Toolbar>
-  //         <IconButton
-  //           size="large"
-  //           edge="start"
-  //           color="inherit"
-  //           aria-label="open drawer"
-  //           sx={{ mr: 2 }}
-  //         >
-  //           <MenuIcon />
-  //         </IconButton>
-  //         <Typography
-  //           variant="h6"
-  //           noWrap
-  //           component="div"
-  //           sx={{ display: { xs: "none", sm: "block" } }}
-  //         >
-  //           HOME
-  //         </Typography>
-  //         <Search>
-  //           <SearchIconWrapper>
-  //             <SearchIcon />
-  //           </SearchIconWrapper>
-  //           <StyledInputBase
-  //             placeholder="Search…"
-  //             inputProps={{ "aria-label": "search" }}
-  //           />
-  //         </Search>
-  //         <Box sx={{ flexGrow: 1 }} />
-  //         <Box sx={{ display: { xs: "none", md: "flex" } }}>
-  //           {/* <IconButton size="large" aria-label="shopping cart" color="inherit" onClick={handleCartIconClick}>
-  //           <Badge badgeContent={items.length} color="error">
-  //           </Badge>
-  //             <ShoppingCartIcon />
-  //           </IconButton> */}
-  //           <Link to="/cart" onClick={handleCartIconClick}>
-  //             <IconButton
-  //               size="large"
-  //               aria-label="shopping cart"
-  //               color="inherit"
-  //             >
-  //               <Badge badgeContent={items.length} color="error" />
-  //               <ShoppingCartIcon />
-  //             </IconButton>
-  //           </Link>
-
-  //           <IconButton
-  //             size="large"
-  //             edge="end"
-  //             aria-label="account of current user"
-  //             aria-controls={menuId}
-  //             aria-haspopup="true"
-  //             onClick={handleProfileMenuOpen}
-  //             color="inherit"
-  //           >
-  //             <AccountCircle />
-  //           </IconButton>
-  //         </Box>
-  //         <Box sx={{ display: { xs: "flex", md: "none" } }}>
-  //           <IconButton
-  //             size="large"
-  //             aria-label="show more"
-  //             aria-controls={mobileMenuId}
-  //             aria-haspopup="true"
-  //             onClick={handleMobileMenuOpen}
-  //             color="inherit"
-  //           >
-  //             <MoreIcon />
-  //           </IconButton>
-  //         </Box>
-  //       </Toolbar>
-  //     </AppBar>
-  //     {renderMobileMenu}
-  //     {renderMenu}
-  //   </Box>
-  // );
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            sx={{ mr: 2 }}
+          >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ display: { xs: "none", sm: "block" } }}
+          >
             HOME
           </Typography>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ "aria-label": "search" }}
+            />
           </Search>
+          
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          {userProfile &&
+      <div>
+        <h2>Welcome, {userProfile?.name}!</h2>
+      </div>
+      }
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <Link to="/cart" onClick={handleCartIconClick}>
-              <IconButton size="large" aria-label="shopping cart" color="inherit">
+              <IconButton
+                size="large"
+                aria-label="shopping cart"
+                color="inherit"
+              >
                 <Badge badgeContent={items.length} color="error" />
                 <ShoppingCartIcon />
               </IconButton>
             </Link>
-            {!userProfile && (
               <IconButton
                 size="large"
                 edge="end"
@@ -295,9 +286,8 @@ export default function Header() {
               >
                 <AccountCircle />
               </IconButton>
-            )}
           </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="show more"

@@ -8,6 +8,7 @@ import {
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
 import { Product } from "../../types/Product";
+import { User } from "../../types/User";
 import Pagination from "@mui/material/Pagination";
 import ProductCard from "./ProductCard";
 import {
@@ -34,14 +35,17 @@ const Home = () => {
   const [items, setItems] = useState<Product[]>([]);
   const { products } = useAppSelector((state) => state.productsReducer);
   const { categories } = useAppSelector((state) => state.categoryReducer);
+  const [userProfile, setUserProfile] = useState<User | null>(null)
   const { productByCategory } = useAppSelector(
     (state) => state.categoryReducer
   );
   const [page, setPage] = useState(1);
 
   const filterProducts = getProductList(products, productByCategory);
-  const { userProfile } = useAppSelector(state => state.authenticationReducer);
-
+  // const { userProfile } = useAppSelector(state => state.authenticationReducer);
+  
+  // localStorage.setItem("userProfile", JSON.stringify(userProfile.data));
+  
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
     const fetchQuery: FetchQuery = {
@@ -59,11 +63,18 @@ const Home = () => {
     };
     dispatch(fetchAllCategoriesId(fetchQuery));
   };
+  const storedUserProfile = localStorage.getItem("userProfile");
 
   useEffect(() => {
+    if (storedUserProfile) {
+      const parsedUserProfile = JSON.parse(storedUserProfile);
+      setUserProfile(parsedUserProfile);
+    } else {
+      setUserProfile(null)
+    }
       dispatch(fetchAllProducts({ offset: 1, limit: 6 }));
       dispatch(fetchAllCategories());
-  }, []); 
+  }, [storedUserProfile]); 
 
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -71,10 +82,7 @@ const Home = () => {
 
   return (
     <div>
-      <div>
-        <Header />
-        <h2>Welcome, {userProfile?.name}!</h2>
-      </div>
+      <Header />
       <div className="category-grid">
         {categories.map((category) => (
           <button
