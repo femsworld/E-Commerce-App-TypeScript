@@ -14,26 +14,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   const storedUserProfile = localStorage.getItem("userProfile");
-  //   if (storedUserProfile && isLoggedIn) {
-  //     const parsedUserProfile = JSON.parse(storedUserProfile);
-  //     setUserProfile(parsedUserProfile);
-  //   } else {
-  //     setUserProfile(null);
-  //   }
-  // }, [isLoggedIn]);
-
-  // useEffect(() => {
-  //   if (userProfile) {
-  //     localStorage.setItem("userProfile", JSON.stringify(userProfile));
-  //   } else {
-  //     localStorage.removeItem("userProfile");
-  //   }
-  // }, [userProfile]);
 
   const handleLogin = async () => {
     try {
@@ -46,12 +27,6 @@ const Login = () => {
     }
   };
 
-  const handleLogout = () => {
-    dispatch(userLogout());
-    setIsLoggedIn(false);
-    window.location.href = "/";
-  };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!email || !password) {
@@ -62,36 +37,6 @@ const Login = () => {
   };
 
   return (
-    // <div data-testid="login">
-    //   <h2>Login</h2>
-    //   {isLoggedIn ? (
-    //     <div>
-    //       <p>Welcome, {userProfile?.name}!</p>
-    //       <button onClick={handleLogout}>Logout</button>
-    //       {/* <ProfilePage></ProfilePage> */}
-    //       <Home></Home>
-    //     </div>
-    //   ) : (
-    //     <form onSubmit={handleSubmit}>
-    //       <input
-    //         type="text"
-    //         name="email"
-    //         placeholder="Email"
-    //         value={email}
-    //         onChange={(e) => setEmail(e.target.value)}
-    //       />
-    //       <input
-    //         type="password"
-    //         name="password"
-    //         placeholder="Password"
-    //         value={password}
-    //         onChange={(e) => setPassword(e.target.value)}
-    //       />
-    //       <button>Login</button>
-    //       {error && <p>{error}</p>}
-    //     </form>
-    //   )}
-    // </div>
     <form onSubmit={handleSubmit}>
           <input
             type="text"

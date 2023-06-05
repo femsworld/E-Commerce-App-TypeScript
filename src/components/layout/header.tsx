@@ -115,7 +115,6 @@ export default function Header() {
   const handleLogout = () => {
     dispatch(userLogout());
     setIsLoggedIn(false);
-    // window.location.href = "/";
   };
 
   useEffect(() => {
