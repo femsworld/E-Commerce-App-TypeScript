@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Navigate } from "react-router-dom";
+import { Route, Navigate, Routes } from "react-router-dom";
 
 interface PrivateRouteProps {
   path: string;
@@ -14,8 +14,11 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
   isAuthenticated,
   redirectTo,
 }) => {
+  console.log("Profile page", isAuthenticated)
   return isAuthenticated ? (
+    <Routes>
     <Route path={path} element={element} />
+    </Routes>
   ) : (
     <Navigate to={redirectTo} replace />
   );

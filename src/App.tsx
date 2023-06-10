@@ -12,8 +12,11 @@ import PrivateRoute from "./components/layout/PrivateRoute";
 
 const App = () => {
   const { access_token, userProfile } = useAppSelector((state) => state.authenticationReducer);
-  const isLoggedIn = !!access_token || !!userProfile;
-
+  // const isLoggedIn = !!access_token || !!userProfile;
+  const storedUserProfile = localStorage.getItem("userProfile");
+  // const isLoggedIn = !!access_token || !!userProfile;
+  console.log("Access token: ", access_token)
+  console.log("userProfile: ", userProfile)
   return (
     <BrowserRouter>
       <Routes>
@@ -26,8 +29,8 @@ const App = () => {
           path="/profile"
           element={
             <PrivateRoute
-          path="/profile"
-          isAuthenticated={isLoggedIn}
+          path="/profile/*"
+          isAuthenticated={!!storedUserProfile}
           redirectTo="/login"
           element={<ProfilePage />}
         />
