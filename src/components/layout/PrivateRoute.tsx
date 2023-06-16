@@ -14,7 +14,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
   isAuthenticated,
   redirectTo,
 }) => {
-  console.log("Profile page", isAuthenticated)
+  // console.log("Profile page", isAuthenticated)
   return isAuthenticated ? (
     <Routes>
     <Route path={path} element={element} />

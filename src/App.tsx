@@ -15,8 +15,8 @@ const App = () => {
   // const isLoggedIn = !!access_token || !!userProfile;
   const storedUserProfile = localStorage.getItem("userProfile");
   // const isLoggedIn = !!access_token || !!userProfile;
-  console.log("Access token: ", access_token)
-  console.log("userProfile: ", userProfile)
+  // console.log("Access token: ", access_token)
+  // console.log("userProfile: ", userProfile)
   return (
     <BrowserRouter>
       <Routes>
@@ -25,11 +25,22 @@ const App = () => {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/profile"
+        {/* <Route
+          path="/profile/*"
           element={
             <PrivateRoute
-          path="/profile/*"
+          path="/profile"
+          isAuthenticated={!!storedUserProfile}
+          redirectTo="/login"
+          element={<ProfilePage />}
+        />
+          }
+        /> */}
+        <Route
+          path="/*"
+          element={
+            <PrivateRoute
+          path="/profile"
           isAuthenticated={!!storedUserProfile}
           redirectTo="/login"
           element={<ProfilePage />}
