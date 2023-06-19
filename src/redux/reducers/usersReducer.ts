@@ -1,26 +1,41 @@
-import { PayloadAction, createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  PayloadAction,
+  createAction,
+  createAsyncThunk,
+  createSlice,
+  current,
+} from "@reduxjs/toolkit";
 
 import axios, { AxiosError } from "axios";
 
 import { User } from "../../types/User";
+import { UserProfile } from "../../types/UserProfile";
 import { UserUpdate } from "../../types/UserUpdate";
 
 interface UserReducer {
-  users: User[]
-  currentUser?: User
-  loading: boolean
-  error: string
+  users: User[];
+  currentUser?: User;
+  loading: boolean;
+  error: string;
 }
 
 const initialState: UserReducer = {
   users: [],
   loading: false,
-  error: ""
-}
+  error: "",
+  currentUser: {
+    id: -1,
+    name: "",
+    email: "",
+    role: "customer",
+    password: "",
+    avatar: "",
+  },
+};
 
 interface FetchQuery {
-  page: number
-  per_page: number
+  page: number;
+  per_page: number;
 }
 
 interface RootState {
@@ -29,8 +44,8 @@ interface RootState {
 }
 
 interface thunkAPI {
-  username: string
-  password: string
+  username: string;
+  password: string;
 }
 
 interface TokenResponse {
@@ -44,18 +59,40 @@ export const setCurrentUser = createAction<User>("users/setCurrentUser");
 
 export const fetchAllUsers = createAsyncThunk(
   "fetchAllUsers",
-  async ({
-      page, per_page
-  }: FetchQuery) => {
-      try {
-          const result = await axios.get<User[]>(`https://api.escuelajs.co/api/v1/users?page=${page}&per_page=${per_page}`)
-          return result.data
-      } catch (e) {
-          const error = e as AxiosError
-          return error
-      }
+  async ({ page, per_page }: FetchQuery) => {
+    try {
+      const result = await axios.get<User[]>(
+        `https://api.escuelajs.co/api/v1/users?page=${page}&per_page=${per_page}`
+      );
+      return result.data;
+    } catch (e) {
+      const error = e as AxiosError;
+      return error;
+    }
   }
-)
+);
+
+export const EditMeUser = createAsyncThunk(
+  "EditMeUser",
+  async ({ id, email, password, name, role, avatar }: UserProfile) => {
+    console.log("before update: ",id, name)
+    try {
+      const result = await axios.put<User>(
+        `https://api.escuelajs.co/api/v1/users/${id}`,
+        { email: email, password: password, name: name, role: role, avatar: avatar }
+      );
+      console.log("Updated user profile", result)
+      return result.data;
+    } catch (e) {
+      const error = e as AxiosError;
+      return error;
+    }
+    
+  }
+);
+
+
+
 const usersSlice = createSlice({
   name: "users",
   initialState,
@@ -89,20 +126,32 @@ const usersSlice = createSlice({
   },
   extraReducers: (build) => {
     build
-        .addCase(fetchAllUsers.fulfilled, (state, action) => {
-      if(action.payload instanceof AxiosError) {
-        state.error = action.payload.message
-      } else {
-        state.users = action.payload
-      }
-
-        })
-       .addCase(fetchAllUsers.pending, (state, action) => {
-        state.loading = true
-    })
-    .addCase(fetchAllUsers.rejected, (state, action) => {
-      state.error = "Cannot fetch data"
-    })
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+        if (action.payload instanceof AxiosError) {
+          state.error = action.payload.message;
+        } else {
+          state.users = action.payload;
+        }
+      })
+      .addCase(fetchAllUsers.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(fetchAllUsers.rejected, (state, action) => {
+        state.error = "Cannot fetch data";
+      })
+      .addCase(EditMeUser.fulfilled, (state, action) => {
+        if (action.payload instanceof AxiosError) {
+          state.error = action.payload.message;
+        } else {
+          state.currentUser = action.payload;
+        }
+      })
+      .addCase(EditMeUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(EditMeUser.rejected, (state) => {
+        state.error = "User cannot be update at the moment, try again later.";
+      });
   },
 });
 

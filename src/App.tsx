@@ -25,17 +25,6 @@ const App = () => {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
-        {/* <Route
-          path="/profile/*"
-          element={
-            <PrivateRoute
-          path="/profile"
-          isAuthenticated={!!storedUserProfile}
-          redirectTo="/login"
-          element={<ProfilePage />}
-        />
-          }
-        /> */}
         <Route
           path="/*"
           element={

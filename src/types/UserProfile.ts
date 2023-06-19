@@ -4,5 +4,5 @@ export interface UserProfile {
     password: string
     name: string
     role: "customer" | "admin"
-    avatar: ""
+    avatar: string
 }
