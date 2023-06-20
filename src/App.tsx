@@ -8,6 +8,7 @@ import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import ProfilePage from "./components/layout/ProfilePage";
 import PrivateRoute from "./components/layout/PrivateRoute";
+import Dashboard from "./components/layout/Dashboard";
 
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route
           path="/*"
           element={
@@ -33,6 +35,17 @@ const App = () => {
           isAuthenticated={!!storedUserProfile}
           redirectTo="/login"
           element={<ProfilePage />}
+        />
+          }
+        />
+        <Route
+          path="/*"
+          element={
+            <PrivateRoute
+          path="/dashboard"
+          isAuthenticated={!!storedUserProfile}
+          redirectTo="/login"
+          element={<Dashboard />}
         />
           }
         />

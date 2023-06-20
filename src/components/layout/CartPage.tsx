@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import useAppSelector from "../../hooks/useAppSelector";
 import { addItemToCart, clearCart, deleteItemFromCart, removeItemToCart } from "../../redux/reducers/cartReducer";
+import Header from "./header";
 
 const CartPage = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +16,6 @@ const CartPage = () => {
     }
   };
 
-  
   const handleIncreaseQuantity = (itemId: any) => {
     dispatch(addItemToCart({ id: itemId }));
   };
@@ -25,6 +25,9 @@ const CartPage = () => {
 
   return (
     <div>
+      <div>
+      <Header />
+      </div>
       <h2>Cart</h2>
       {items.length === 0 ? (
         <p>Your cart is empty.</p>

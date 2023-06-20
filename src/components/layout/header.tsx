@@ -127,6 +127,7 @@ export default function Header() {
   }, [storedUserProfile]);
   
   const menuId = "primary-search-account-menu";
+  
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -143,33 +144,60 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      
-      {!userProfile ? 
-      <><MenuItem>
-        <Link to="/signup" style={{ textDecoration: "none", color: "inherit" }}>
-          Sign Up
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link to="/login" style={{ textDecoration: "none", color: "inherit" }}>
-          Login
-        </Link>
-      </MenuItem></>
-      :
-      <><MenuItem>
-        <Link to="/profile" style={{ textDecoration: "none", color: "inherit" }}>
-          Profile
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link to="/" onClick={handleLogout} style={{ textDecoration: "none", color: "inherit" }}>
-          Log Out
-        </Link>
-      </MenuItem></>
-      }
-      {/* <MenuItem onClick={handleMenuClose}>Login</MenuItem> */}
+      {!userProfile ? (
+        <>
+          <MenuItem>
+            <Link
+              to="/signup"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              Sign Up
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link
+              to="/login"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              Login
+            </Link>
+          </MenuItem>
+        </>
+      ) : (
+        <>
+          {userProfile.role === "admin" && (
+            <MenuItem>
+              <Link
+                to="/dashboard"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                Dashboard
+              </Link>
+            </MenuItem>
+          )}
+          <MenuItem>
+            <Link
+              to="/profile"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              Profile
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link
+              to="/"
+              onClick={handleLogout}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              Log Out
+            </Link>
+          </MenuItem>
+        </>
+      )}
     </Menu>
   );
+  
+
   {
     showSignUp && <SignUp />;
   }
@@ -245,7 +273,7 @@ export default function Header() {
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-            HOME
+            <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>HOME</Link>
           </Typography>
           <Search>
             <SearchIconWrapper>
