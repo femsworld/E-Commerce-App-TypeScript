@@ -24,6 +24,12 @@ const store = configureStore({
       loading: false,
       error: "",
       users: [],
+      newUser: {
+        name: "",
+        email: "",
+        password: "",
+        avatar: ""
+      }
     },
   },
 });

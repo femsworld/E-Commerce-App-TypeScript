@@ -11,10 +11,12 @@ import axios, { AxiosError } from "axios";
 import { User } from "../../types/User";
 import { UserProfile } from "../../types/UserProfile";
 import { UserUpdate } from "../../types/UserUpdate";
+import { NewUser } from "../../types/NewUser";
 
 interface UserReducer {
   users: User[];
   currentUser?: User;
+  newUser: NewUser;
   loading: boolean;
   error: string;
 }
@@ -23,6 +25,12 @@ const initialState: UserReducer = {
   users: [],
   loading: false,
   error: "",
+  newUser: {
+    name: "",
+    email: "",
+    password: "",
+    avatar: "",
+  },
   currentUser: {
     id: -1,
     name: "",
@@ -87,11 +95,21 @@ export const EditMeUser = createAsyncThunk(
       const error = e as AxiosError;
       return error;
     }
-    
   }
 );
 
-
+export const createOneUser = createAsyncThunk(
+  "createOneUser", 
+  async({email, password, name, avatar}: NewUser) => {
+  try {
+    const result = await axios.post<NewUser>(`https://api.escuelajs.co/api/v1/users/`, { email: email, password: password, name: name, avatar: avatar })
+    return result.data
+  } catch (e) {
+    const error = e as AxiosError
+    return error
+  }
+  }
+)
 
 const usersSlice = createSlice({
   name: "users",
@@ -151,7 +169,20 @@ const usersSlice = createSlice({
       })
       .addCase(EditMeUser.rejected, (state) => {
         state.error = "User cannot be update at the moment, try again later.";
-      });
+      })
+      .addCase(createOneUser.fulfilled, (state, action) => {
+        if (action.payload instanceof AxiosError) {
+          state.error = action.payload.message
+        } else {
+          state.newUser = action.payload
+        }
+      })
+      .addCase(createOneUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createOneUser.rejected, (state) => {
+        state.error = "User cannot be update at the moment, try again later.";
+      })
   },
 });
 
