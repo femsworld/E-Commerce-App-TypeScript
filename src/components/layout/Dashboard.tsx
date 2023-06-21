@@ -18,6 +18,7 @@ const Dashboard = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    console.log("FetchAllUsers useEffect")
     dispatch(fetchAllUsers({ page: 1, per_page: 20 }));
   }, []);
 

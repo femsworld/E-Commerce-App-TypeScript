@@ -26,8 +26,8 @@ const App = () => {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
-        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-        <Route
+        
+        {/* <Route
           path="/*"
           element={
             <PrivateRoute
@@ -48,7 +48,13 @@ const App = () => {
           element={<Dashboard />}
         />
           }
-        />
+        /> */}
+
+        <Route path="/" element={<PrivateRoute isAuthenticated={!!storedUserProfile}/>}>
+          <Route path="/profile" element={<ProfilePage/>}/>
+          <Route path="/dashboard" element={<Dashboard/>}/>
+        </Route>
+
       </Routes>
     </BrowserRouter>
   );

@@ -68,6 +68,7 @@ export const setCurrentUser = createAction<User>("users/setCurrentUser");
 export const fetchAllUsers = createAsyncThunk(
   "fetchAllUsers",
   async ({ page, per_page }: FetchQuery) => {
+    console.log("All user", page, per_page)
     try {
       const result = await axios.get<User[]>(
         `https://api.escuelajs.co/api/v1/users?page=${page}&per_page=${per_page}`
